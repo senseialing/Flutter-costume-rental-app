@@ -15,13 +15,13 @@ class CostumeCard extends StatelessWidget {
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         elevation: 5,
-        color: Colors.white.withOpacity(0.95),
+        color: Colors.white.withOpacity(0.3), // Transparan putih 30%
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Buat gambar menggunakan Expanded agar isi sebagian besar
+            // Gambar kostum
             Expanded(
-              flex: 3, // 3 bagian untuk gambar
+              flex: 3,
               child: ClipRRect(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                 child: Image.asset(
@@ -30,9 +30,9 @@ class CostumeCard extends StatelessWidget {
                 ),
               ),
             ),
-            // Konten deskripsi dan tombol
+            // Informasi kostum
             Expanded(
-              flex: 2, // 2 bagian untuk teks dan tombol
+              flex: 3,
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
@@ -52,6 +52,16 @@ class CostumeCard extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 12, color: Colors.black87),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      'Ukuran: ${costume.sizes.join(', ')}',
+                      style: TextStyle(fontSize: 12, color: Colors.black54),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      'Bahan: ${costume.material}',
+                      style: TextStyle(fontSize: 12, color: Colors.black54),
                     ),
                     SizedBox(height: 6),
                     Text(

@@ -16,7 +16,6 @@ class _RentalScreenState extends State<RentalScreen> {
   @override
   Widget build(BuildContext context) {
     final Costume costume = ModalRoute.of(context)!.settings.arguments as Costume;
-
     int totalPrice = costume.price * duration;
 
     return Scaffold(
@@ -25,14 +24,12 @@ class _RentalScreenState extends State<RentalScreen> {
         children: [
           // Background image
           Image.asset(
-            'assets/images/bg_rental.jpg', // Ganti sesuai gambar background kamu
+            'assets/images/bg_rental.jpg',
             fit: BoxFit.cover,
           ),
-          // Overlay agar teks terlihat jelas
-          Container(
-            color: Colors.black.withOpacity(0.6),
-          ),
-          // Konten utama
+          // Overlay
+          Container(color: Colors.black.withOpacity(0.6)),
+          // Content
           SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 60),
@@ -75,6 +72,36 @@ class _RentalScreenState extends State<RentalScreen> {
                       color: Colors.white70,
                     ),
                   ),
+                  SizedBox(height: 10),
+                  Divider(color: Colors.white24),
+                  SizedBox(height: 10),
+
+                  // Tambahan Informasi Kostum
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Ukuran Tersedia: ${costume.sizes.join(', ')}',
+                          style: GoogleFonts.poppins(fontSize: 14, color: Colors.white),
+                        ),
+                        Text(
+                          'Bahan: ${costume.material}',
+                          style: GoogleFonts.poppins(fontSize: 14, color: Colors.white),
+                        ),
+                        Text(
+                          'Perawatan: ${costume.careInstructions}',
+                          style: GoogleFonts.poppins(fontSize: 14, color: Colors.white),
+                        ),
+                        Text(
+                          'Kebijakan Pengembalian: ${costume.returnPolicy}',
+                          style: GoogleFonts.poppins(fontSize: 14, color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+
                   SizedBox(height: 20),
                   Text(
                     'Durasi Sewa (hari)',
@@ -105,7 +132,7 @@ class _RentalScreenState extends State<RentalScreen> {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    'Total Harga: Rp ${totalPrice.toString()}',
+                    'Total Harga: Rp $totalPrice',
                     style: GoogleFonts.poppins(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -115,36 +142,34 @@ class _RentalScreenState extends State<RentalScreen> {
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      Provider.of<RentalHistory>(context, listen: false).addRental(
-                        Rental(
-                          costume: costume,
-                          date: DateTime.now(),
-                          duration: duration,
-                        ),
-                      );
-
-                      // Tampilkan dialog konfirmasi harga total
                       showDialog(
                         context: context,
                         builder: (ctx) => AlertDialog(
                           title: Text('Konfirmasi Sewa'),
                           content: Text(
-                            'Anda akan menyewa ${costume.name} selama $duration hari.\nTotal harga: Rp ${totalPrice.toString()}.',
+                            'Anda akan menyewa ${costume.name} selama $duration hari.\nTotal harga: Rp $totalPrice.',
                           ),
                           actions: [
                             TextButton(
                               onPressed: () {
-                                Navigator.of(ctx).pop(); // tutup dialog
+                                Navigator.of(ctx).pop();
                               },
                               child: Text('Batal'),
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.of(ctx).pop(); // tutup dialog
+                                Provider.of<RentalHistory>(context, listen: false).addRental(
+                                  Rental(
+                                    costume: costume,
+                                    date: DateTime.now(),
+                                    duration: duration,
+                                  ),
+                                );
+                                Navigator.of(ctx).pop();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('Berhasil menyewa ${costume.name}')),
                                 );
-                                Navigator.pop(context); // kembali ke halaman sebelumnya
+                                Navigator.pop(context);
                               },
                               child: Text('Konfirmasi'),
                             ),
