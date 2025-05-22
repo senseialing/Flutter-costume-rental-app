@@ -1,9 +1,9 @@
 # 👘 Aplikasi Penyewaan Baju Cosplay
 Developer
-Nama: Rama Aditya Sutisna
-NPM: 2022804054
-Kelas: SI 6B
-Mata Kuliah: Pemrograman Mobile
+- Nama: Rama Aditya Sutisna
+- NPM: 2022804054
+- Kelas: SI 6B
+- Mata Kuliah: Pemrograman Mobile
 
 Aplikasi Flutter untuk menyewa kostum cosplay lengkap dengan fitur interaktif, tampilan menarik, dan manajemen data yang efisien.
 Dibuat untuk memenuhi Ujian Tengah Semester Pemrograman Mobile.
