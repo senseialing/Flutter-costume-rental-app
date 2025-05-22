@@ -1,16 +1,29 @@
-# penyewaanbaju
+# 👘 Aplikasi Penyewaan Baju Cosplay
+Developer
+Nama: Rama Aditya Sutisna
+NPM: 2022804054
+Kelas: SI 6B
+Mata Kuliah: Pemrograman Mobile
 
-A new Flutter project.
+Aplikasi Flutter untuk menyewa kostum cosplay lengkap dengan fitur interaktif, tampilan menarik, dan manajemen data yang efisien.
+Dibuat untuk memenuhi Ujian Tengah Semester Pemrograman Mobile.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## ✨ Fitur Utama
 
-A few resources to get you started if this is your first Flutter project:
+- 🏠 **Beranda** dengan kategori (Baju, Aksesoris, Wig)
+- 🎨 **Galeri Gambar Kostum** (Carousel)
+- 📄 **Detail Kostum**: ukuran, bahan, perawatan, kebijakan pengembalian
+- 📅 **Pilih Tanggal & Durasi Sewa**
+- ✅ **Cek Ketersediaan Kostum**
+- 🧾 **Riwayat Penyewaan**
+- 💡 **UI/UX modern dan ramah pengguna**
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🚀 Cara Menjalankan Proyek
+
+1. Clone repository:
+   ```bash
+   git clone https://github.com/senseialing/UTS.git
