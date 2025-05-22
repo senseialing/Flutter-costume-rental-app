@@ -3,7 +3,14 @@ import 'package:flutter/material.dart';
 import '../models/costume.dart';
 import '../widgets/costume_card.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'login_screen.dart';
 
+void main() {
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: LoginScreen(), // Ganti dengan login dulu
+  ));
+}
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
