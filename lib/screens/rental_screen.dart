@@ -12,6 +12,22 @@ class RentalScreen extends StatefulWidget {
 
 class _RentalScreenState extends State<RentalScreen> {
   int duration = 1;
+  DateTime? startDate;
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime now = DateTime.now();
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: startDate ?? now,
+      firstDate: now,
+      lastDate: now.add(Duration(days: 365)),
+    );
+    if (picked != null) {
+      setState(() {
+        startDate = picked;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +151,49 @@ class _RentalScreenState extends State<RentalScreen> {
                       ),
                     ),
                   ),
+
+                  SizedBox(height: 20),
+                  Text(
+                    'Pilih Tanggal Mulai Sewa',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () => _selectDate(context),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.white70),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            startDate != null
+                                ? '${startDate!.day}/${startDate!.month}/${startDate!.year}'
+                                : 'Pilih tanggal',
+                            style: GoogleFonts.poppins(color: Colors.white),
+                          ),
+                          Icon(Icons.calendar_today, color: Colors.white),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  if (startDate != null) ...[
+                    SizedBox(height: 10),
+                    Text(
+                      'Tanggal Selesai: ${startDate!.add(Duration(days: duration)).day}/${startDate!.add(Duration(days: duration)).month}/${startDate!.add(Duration(days: duration)).year}',
+                      style: GoogleFonts.poppins(color: Colors.white70),
+                    ),
+                  ],
+
                   SizedBox(height: 20),
                   Text(
                     'Total Harga: Rp $totalPrice',
@@ -144,17 +203,26 @@ class _RentalScreenState extends State<RentalScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 20),
 
+                  SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: costume.isAvailable
                         ? () {
+                      if (startDate == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Silakan pilih tanggal mulai sewa')),
+                        );
+                        return;
+                      }
+
                       showDialog(
                         context: context,
                         builder: (ctx) => AlertDialog(
                           title: Text('Konfirmasi Sewa'),
                           content: Text(
-                            'Anda akan menyewa ${costume.name} selama $duration hari.\nTotal harga: Rp $totalPrice.',
+                            'Anda akan menyewa ${costume.name} dari '
+                                '${startDate!.day}/${startDate!.month}/${startDate!.year} '
+                                'selama $duration hari.\nTotal harga: Rp $totalPrice.',
                           ),
                           actions: [
                             TextButton(
@@ -168,7 +236,7 @@ class _RentalScreenState extends State<RentalScreen> {
                                 Provider.of<RentalHistory>(context, listen: false).addRental(
                                   Rental(
                                     costume: costume,
-                                    date: DateTime.now(),
+                                    date: startDate!,
                                     duration: duration,
                                   ),
                                 );
