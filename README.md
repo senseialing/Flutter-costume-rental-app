@@ -18,6 +18,7 @@ Dibuat untuk memenuhi Ujian Tengah Semester Pemrograman Mobile.
 ![Detail Kostum](assets/images/ss2.png)
 ## ✨ Fitur Utama
 
+- 🔒 **Login** dengan username(admin) dan Password (123456)
 - 🏠 **Beranda** dengan kategori (Baju, Aksesoris, Wig)
 - 🎨 **Galeri Gambar Kostum** (Carousel)
 - 📄 **Detail Kostum**: ukuran, bahan, perawatan, kebijakan pengembalian
