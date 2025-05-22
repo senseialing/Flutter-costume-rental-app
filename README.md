@@ -9,7 +9,13 @@ Aplikasi Flutter untuk menyewa kostum cosplay lengkap dengan fitur interaktif, t
 Dibuat untuk memenuhi Ujian Tengah Semester Pemrograman Mobile.
 
 ---
+## 📸 Preview
 
+### Tampilan Beranda
+![Tampilan Beranda](assets/images/ss1.png)
+
+### Detail Kostum
+![Detail Kostum](assets/images/ss2.png)
 ## ✨ Fitur Utama
 
 - 🏠 **Beranda** dengan kategori (Baju, Aksesoris, Wig)
