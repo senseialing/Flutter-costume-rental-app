@@ -8,6 +8,7 @@ class Costume {
   final String material;
   final String careInstructions;
   final String returnPolicy;
+  bool isAvailable;
 
   Costume({
     required this.name,
@@ -19,5 +20,6 @@ class Costume {
     required this.material,
     required this.careInstructions,
     required this.returnPolicy,
+    this.isAvailable = true,
   });
 }

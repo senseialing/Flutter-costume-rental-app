@@ -22,14 +22,11 @@ class _RentalScreenState extends State<RentalScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background image
           Image.asset(
             'assets/images/bg_rental.jpg',
             fit: BoxFit.cover,
           ),
-          // Overlay
           Container(color: Colors.black.withOpacity(0.6)),
-          // Content
           SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 60),
@@ -76,7 +73,6 @@ class _RentalScreenState extends State<RentalScreen> {
                   Divider(color: Colors.white24),
                   SizedBox(height: 10),
 
-                  // Tambahan Informasi Kostum
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Column(
@@ -97,6 +93,15 @@ class _RentalScreenState extends State<RentalScreen> {
                         Text(
                           'Kebijakan Pengembalian: ${costume.returnPolicy}',
                           style: GoogleFonts.poppins(fontSize: 14, color: Colors.white),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          costume.isAvailable ? 'Status: Tersedia' : 'Status: Tidak Tersedia',
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            color: costume.isAvailable ? Colors.greenAccent : Colors.redAccent,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ],
                     ),
@@ -140,8 +145,10 @@ class _RentalScreenState extends State<RentalScreen> {
                     ),
                   ),
                   SizedBox(height: 20),
+
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: costume.isAvailable
+                        ? () {
                       showDialog(
                         context: context,
                         builder: (ctx) => AlertDialog(
@@ -165,6 +172,9 @@ class _RentalScreenState extends State<RentalScreen> {
                                     duration: duration,
                                   ),
                                 );
+                                setState(() {
+                                  costume.isAvailable = false;
+                                });
                                 Navigator.of(ctx).pop();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('Berhasil menyewa ${costume.name}')),
@@ -176,9 +186,10 @@ class _RentalScreenState extends State<RentalScreen> {
                           ],
                         ),
                       );
-                    },
+                    }
+                        : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
+                      backgroundColor: costume.isAvailable ? Colors.white : Colors.grey,
                       foregroundColor: Colors.deepPurple,
                       padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                       shape: RoundedRectangleBorder(
