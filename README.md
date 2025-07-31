@@ -24,8 +24,8 @@ RAMCOSPLY adalah aplikasi mobile yang memungkinkan pengguna untuk menyewa berbag
    -   **Pemilihan Ukuran**: Pengguna dapat memilih ukuran yang tersedia untuk setiap kostum sebelum menyewa.
    -   **Pemilihan Tanggal**: Kalender interaktif untuk memilih tanggal mulai dan selesai sewa.
    -   **Konfirmasi & Transaksi**: Dialog konfirmasi menampilkan rincian pesanan sebelum transaksi disimpan. 
- ! [Tampilan Sewa](assets/readme/sewa.png)
- ! [Tampilan Sewa](assets/readme/sewa.png)
+ ![Tampilan Sewa](assets/readme/sewa.png)
+ ![Tampilan Sewa](assets/readme/animasi.png)
 - **Riwayat Sewa**:
    -   Semua transaksi sewa secara otomatis disimpan ke **Cloud Firestore**.
    -   Pengguna dapat melihat daftar riwayat penyewaan mereka, yang diurutkan dari yang terbaru.
