@@ -76,5 +76,5 @@ RAMCOSPLY adalah aplikasi mobile yang memungkinkan pengguna untuk menyewa berbag
 
 
 ## Kontributor
-- **Nama:Rama Aditya Sutisna** [Isi dengan nama Anda]
-- **NIM:2022804054** [Isi dengan NIM Anda]
+- **Nama:Rama Aditya Sutisna** 
+- **NIM:2022804054** 
