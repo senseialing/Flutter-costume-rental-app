@@ -30,26 +30,34 @@ RAMCOSPLY adalah aplikasi mobile yang memungkinkan pengguna untuk menyewa berbag
    -   Semua transaksi sewa secara otomatis disimpan ke **Cloud Firestore**.
    -   Pengguna dapat melihat daftar riwayat penyewaan mereka, yang diurutkan dari yang terbaru.
    -   Setiap item riwayat dapat diklik untuk melihat halaman detail transaksi yang lengkap.
+   ![Tampilan history](assets/readme/history.png)
+   ![Tampilan History_Detail](assets/readme/detailhis.png)
 -   **Manajemen Profil**:
    -   Pengguna dapat melihat data profil mereka (nama, email, alamat, no. telepon).
    -   Terdapat halaman khusus untuk **mengedit informasi profil** yang akan diperbarui secara real-time di Firestore.
    -   Tombol logout yang aman di halaman profil.
+   ![Tampilan Profil](assets/readme/profil1.png)
 
 ### Fitur Admin
 -   **Panel Admin Eksklusif**:
    -   Akses ke panel admin dibatasi hanya untuk pengguna dengan status `isAdmin` di Firestore.
    -   Tombol "Panel Admin" hanya muncul di halaman profil jika pengguna adalah admin.
    -   Navbar admin disesuaikan secara dinamis (menghilangkan tab "History Sewa").
+   ![Tampilan Admin](assets/readme/admin1.png)
 -   **Manajemen Produk (CRUD)**:
    -   Admin dapat **menambah** item baru (baju/aksesoris) melalui form di aplikasi.
    -   Admin dapat **mengedit** detail item yang sudah ada.
    -   Admin dapat **menghapus** item dari katalog.
+   ![Tampilan Manajemen_produk](assets/readme/admin2.png)
 -   **Manajemen Ketersediaan**:
    -   Saat pengguna menyewa barang, statusnya otomatis berubah menjadi "Tidak Tersedia" (disimulasikan di dalam aplikasi).
    -   Admin memiliki halaman khusus untuk **mengubah status ketersediaan** barang melalui tombol *switch*.
--   **Konfirmasi Sewa**:
    -   Admin dapat melihat semua daftar permintaan sewa dari seluruh pengguna.
    -   Admin dapat menyetujui atau menolak permintaan sewa, yang akan mengubah status transaksi di Firestore.
+   ![Tampilan Ketersedian](assets/readme/admin3.png)
+### LOGIN SEBAGAI ADMIN
+- **NAME:rama@gmail.com**
+- **PASSWORD:123456**
 
 ### UI/UX & Animasi
 -   **Desain Elegan**:
