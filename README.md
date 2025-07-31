@@ -17,8 +17,8 @@ RAMCOSPLY adalah aplikasi mobile yang memungkinkan pengguna untuk menyewa berbag
    -   **Pencarian (Search)**: Pengguna dapat mencari item berdasarkan nama.
    -   **Filter Lanjutan**: Memfilter produk berdasarkan kategori ("Baju", "Aksesoris") dan ketersediaan ("Hanya tampilkan yang tersedia").
    -   **Tampilan Produk Elegan**: Desain kartu produk yang modern dengan informasi harga yang diformat, rating bintang, dan jumlah ulasan.
-   ![Tampilan Beranda](assets/readme/beranda.png) 
-  ![Tampilan Detail screen](assets/readme/detail.png)
+![Tampilan Beranda](assets/readme/beranda.png) 
+![Tampilan Detail screen](assets/readme/detail.png)
 - **Proses Penyewaan**:
    -   Pengguna dapat melihat detail lengkap setiap item, dengan transisi gambar yang mulus menggunakan **Hero Animation**.
    -   **Pemilihan Ukuran**: Pengguna dapat memilih ukuran yang tersedia untuk setiap kostum sebelum menyewa.
