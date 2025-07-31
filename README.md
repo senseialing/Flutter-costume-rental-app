@@ -43,7 +43,8 @@ RAMCOSPLY adalah aplikasi mobile yang memungkinkan pengguna untuk menyewa berbag
    -   Akses ke panel admin dibatasi hanya untuk pengguna dengan status `isAdmin` di Firestore.
    -   Tombol "Panel Admin" hanya muncul di halaman profil jika pengguna adalah admin.
    -   Navbar admin disesuaikan secara dinamis (menghilangkan tab "History Sewa").
-   ![Tampilan Admin](assets/readme/admin1.png)
+![Tampilan Admin](assets/readme/admin1.png)
+
 -   **Manajemen Produk (CRUD)**:
    -   Admin dapat **menambah** item baru (baju/aksesoris) melalui form di aplikasi.
    -   Admin dapat **mengedit** detail item yang sudah ada.
