@@ -58,6 +58,7 @@ class DetailScreen extends StatelessWidget {
                       Text('${currencyFormatter.format(costume.price)} / hari',
                           style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: Colors.cyanAccent)),
                       const SizedBox(height: 10),
+                      // --- PERBAIKAN DI SINI: Menghapus .join() ---
                       Text('Ukuran: ${costume.size}', style: const TextStyle(fontSize: 18, color: Colors.white)),
                       const SizedBox(height: 20),
                       const Text('Deskripsi', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
@@ -67,7 +68,10 @@ class DetailScreen extends StatelessWidget {
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 15),
-                          textStyle: const TextStyle(fontSize: 18),
+                          textStyle: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold, // Font tebal tetap ada
+                          ),
                           backgroundColor: costume.isAvailable ? Colors.indigo : Colors.grey,
                         ),
                         onPressed: costume.isAvailable

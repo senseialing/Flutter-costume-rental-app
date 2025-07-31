@@ -9,16 +9,24 @@ RAMCOSPLY adalah aplikasi mobile yang memungkinkan pengguna untuk menyewa berbag
 -   **Otentikasi Pengguna**:
    -   Sistem **Login** dan **Registrasi** yang aman menggunakan **Firebase Authentication** (Email & Password).
    -   Status login disimpan secara lokal menggunakan **Shared Preferences**, sehingga pengguna tetap masuk saat aplikasi dibuka kembali.
--   **Katalog Produk**:
+### Tampilan LOGIN
+![Tampilan LOGIN](assets/readme/login.png)
+[Tampilan register](assets/readme/register.png)
+  
+- **Katalog Produk**:
    -   **Pencarian (Search)**: Pengguna dapat mencari item berdasarkan nama.
    -   **Filter Lanjutan**: Memfilter produk berdasarkan kategori ("Baju", "Aksesoris") dan ketersediaan ("Hanya tampilkan yang tersedia").
    -   **Tampilan Produk Elegan**: Desain kartu produk yang modern dengan informasi harga yang diformat, rating bintang, dan jumlah ulasan.
--   **Proses Penyewaan**:
+   [Tampilan Beranda](assets/readme/beranda.png) 
+  [Tampilan Detail screen](assets/readme/detail.png)
+- **Proses Penyewaan**:
    -   Pengguna dapat melihat detail lengkap setiap item, dengan transisi gambar yang mulus menggunakan **Hero Animation**.
    -   **Pemilihan Ukuran**: Pengguna dapat memilih ukuran yang tersedia untuk setiap kostum sebelum menyewa.
    -   **Pemilihan Tanggal**: Kalender interaktif untuk memilih tanggal mulai dan selesai sewa.
-   -   **Konfirmasi & Transaksi**: Dialog konfirmasi menampilkan rincian pesanan sebelum transaksi disimpan.
--   **Riwayat Sewa**:
+   -   **Konfirmasi & Transaksi**: Dialog konfirmasi menampilkan rincian pesanan sebelum transaksi disimpan. 
+  [Tampilan Sewa](assets/readme/sewa.png)
+  [Tampilan Sewa](assets/readme/sewa.png)
+- **Riwayat Sewa**:
    -   Semua transaksi sewa secara otomatis disimpan ke **Cloud Firestore**.
    -   Pengguna dapat melihat daftar riwayat penyewaan mereka, yang diurutkan dari yang terbaru.
    -   Setiap item riwayat dapat diklik untuk melihat halaman detail transaksi yang lengkap.
