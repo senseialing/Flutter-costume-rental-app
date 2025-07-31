@@ -10,7 +10,7 @@ RAMCOSPLY adalah aplikasi mobile yang memungkinkan pengguna untuk menyewa berbag
    -   Sistem **Login** dan **Registrasi** yang aman menggunakan **Firebase Authentication** (Email & Password).
    -   Status login disimpan secara lokal menggunakan **Shared Preferences**, sehingga pengguna tetap masuk saat aplikasi dibuka kembali.
 ### Tampilan LOGIN
-![Tampilan LOGIN](assets/readme/login.png)
+[Tampilan LOGIN](assets/readme/login.png)
 [Tampilan register](assets/readme/register.png)
   
 - **Katalog Produk**:
