@@ -1,220 +1,353 @@
-import 'dart:ui'; // <== tambahkan ini untuk BackdropFilter
+import 'dart:async';
 import 'package:flutter/material.dart';
-import '../models/costume.dart';
-import '../widgets/costume_card.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'login_screen.dart';
+import 'package:penyewaanbaju/models/costume.dart';
+import 'package:penyewaanbaju/providers/costume_provider.dart';
+import 'package:penyewaanbaju/widgets/costume_card.dart';
+import 'package:penyewaanbaju/screens/login_screen.dart';
+import 'package:penyewaanbaju/services/auth_service.dart';
+import 'package:penyewaanbaju/screens/profile_screen.dart';
+import 'package:penyewaanbaju/screens/history_screen.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: LoginScreen(), // Ganti dengan login dulu
-  ));
-}
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  int _selectedIndex = 0;
+  final AuthService _authService = AuthService();
 
-  final List<String> categories = ['Baju', 'Aksesoris', 'Wig'];
-
-  final List<Costume> allCostumes = [
-    // Baju
-    Costume(
-      name: 'Naruto',
-      imageUrl: 'assets/images/naruto.jpg',
-      price: 350000,
-      description: 'Jubah Hokage lengkap dengan ikat kepala dan aksesoris khas Naruto.',
-      category: 'baju',
-      sizes: ['M', 'L', 'XL'],
-      material: 'Katun + Polyester',
-      careInstructions: 'Cuci kering atau manual, hindari mesin cuci.',
-      returnPolicy: 'Dikembalikan maksimal 2 hari setelah masa sewa berakhir.',
-    ),
-    Costume(
-      name: 'Sasuke',
-      imageUrl: 'assets/images/sasuke.jpg',
-      price: 420000,
-      description: 'Pakaian Sasuke dengan pedang dan ikat pinggang klan Uchiha.',
-      category: 'baju',
-      sizes: ['L', 'XL'],
-      material: 'Katun Premium',
-      careInstructions: 'Cuci manual dengan air dingin.',
-      returnPolicy: 'Pengembalian dalam 1 hari setelah masa sewa.',
-    ),
-    Costume(
-      name: 'Sakura',
-      imageUrl: 'assets/images/sakura.jpg',
-      price: 390000,
-      description: 'Baju ninja medis Sakura lengkap dengan sarung tangan dan sepatu ninja.',
-      category: 'baju',
-      sizes: ['S', 'M'],
-      material: 'Spandex + Katun',
-      careInstructions: 'Hanya dry cleaning.',
-      returnPolicy: 'Kostum harus dalam kondisi bersih saat dikembalikan.',
-    ),
-
-    // Aksesoris
-    Costume(
-      name: 'Pedang Katana',
-      imageUrl: 'assets/images/pedang.jpg',
-      price: 150000,
-      description: 'Pedang katana asli untuk cosplay karakter samurai.',
-      category: 'Aksesoris',
-      sizes: ['One Size'],
-      material: 'Plastik + Besi Ringan',
-      careInstructions: 'Lap dengan kain kering.',
-      returnPolicy: 'Harus dikembalikan tanpa kerusakan.',
-    ),
-    Costume(
-      name: 'Shuriken',
-      imageUrl: 'assets/images/shuriken.jpg',
-      price: 50000,
-      description: 'Shuriken ninja yang tajam dan realistis.',
-      category: 'Aksesoris',
-      sizes: ['One Size'],
-      material: 'Logam Aluminium',
-      careInstructions: 'Lap dengan tisu kering setelah digunakan.',
-      returnPolicy: 'Jika hilang, ganti biaya sebesar Rp 50.000.',
-    ),
-
-    // Wig
-    Costume(
-      name: 'Wig Naruto',
-      imageUrl: 'assets/images/wig_naruto.jpg',
-      price: 120000,
-      description: 'Wig kuning khas Naruto untuk cosplay.',
-      category: 'Wig',
-      sizes: ['All Size'],
-      material: 'Serat sintetis tahan panas',
-      careInstructions: 'Disisir dan disimpan dalam kotak.',
-      returnPolicy: 'Jangan dicuci, wajib kembalikan dalam kotak.',
-    ),
-    Costume(
-      name: 'Ikat Kepala Ninja',
-      imageUrl: 'assets/images/ikat_kepala.jpg',
-      price: 60000,
-      description: 'Ikat kepala ninja dengan simbol Konoha.',
-      category: 'Wig',
-      sizes: ['All Size'],
-      material: 'Kain + Plat Logam',
-      careInstructions: 'Lap bagian logam jika berkarat.',
-      returnPolicy: 'Wajib dikembalikan dalam pouch aslinya.',
-    ),
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: categories.length, vsync: this);
+  void _logout() async {
+    await _authService.signOut();
+    if (mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+            (route) => false,
+      );
+    }
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Ganti appBar default dengan widget custom:
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight + 48), // tinggi AppBar + TabBar
-        child: ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              color: Colors.deepPurple.withOpacity(0.3), // transparan dengan warna dasar
-              child: SafeArea(
-                child: Column(
+      // 1. Latar belakang utama dipindahkan ke Scaffold utama
+      backgroundColor: Colors.transparent,
+      extendBody: true, // Membuat body bisa berada di belakang navbar
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/header.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        title: Text('RAMCOSPLY', style: GoogleFonts.bebasNeue(fontSize: 32, color: Colors.white, letterSpacing: 2, shadows: [const Shadow(color: Colors.black54, blurRadius: 10, offset: Offset(2, 2))])),
+        centerTitle: true,
+        actions: const [],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      // 2. Body sekarang dibangun oleh FutureBuilder
+      body: FutureBuilder<bool>(
+        future: _authService.checkIsAdmin(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError || !snapshot.hasData) {
+            return const Center(child: Text("Gagal memverifikasi pengguna."));
+          }
+
+          final bool isAdmin = snapshot.data!;
+          final List<Widget> pageOptions = isAdmin
+              ? [ _HomeContent(key: const ValueKey('home')), ProfileScreen(onLogout: _logout) ]
+              : [ _HomeContent(key: const ValueKey('home')), const HistoryScreen(), ProfileScreen(onLogout: _logout) ];
+
+          return Stack(
+            children: [
+              // Latar belakang diletakkan di sini agar berada di bawah konten
+              Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/background.jpg"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              pageOptions.elementAt(_selectedIndex),
+            ],
+          );
+        },
+      ),
+      // 3. BottomNavigationBar juga dibangun oleh FutureBuilder
+      bottomNavigationBar: FutureBuilder<bool>(
+        future: _authService.checkIsAdmin(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const SizedBox.shrink(); // Jangan tampilkan apa-apa saat loading
+          }
+          final bool isAdmin = snapshot.data!;
+          final List<BottomNavigationBarItem> navBarItems = isAdmin
+              ? const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
+          ]
+              : const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History Sewa'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
+          ];
+
+          if (_selectedIndex >= navBarItems.length) {
+            _selectedIndex = 0;
+          }
+
+          return BottomNavigationBar(
+            items: navBarItems,
+            currentIndex: _selectedIndex,
+            // --- PERUBAHAN UTAMA UNTUK TAMPILAN NAVBAR ---
+            backgroundColor: Colors.black.withOpacity(0.5), // Latar belakang semi-transparan
+            selectedItemColor: Colors.white,                 // Warna ikon aktif
+            unselectedItemColor: Colors.white70,               // Warna ikon non-aktif
+            elevation: 0,                                    // Menghilangkan bayangan
+            onTap: _onItemTapped,
+          );
+        },
+      ),
+    );
+  }
+}
+
+
+// Class _HomeContent dan semua isinya TIDAK ADA PERUBAHAN
+class _HomeContent extends StatefulWidget {
+  const _HomeContent({super.key});
+  @override
+  State<_HomeContent> createState() => _HomeContentState();
+}
+
+class _HomeContentState extends State<_HomeContent> {
+  final PageController _pageController = PageController();
+  int _bannerCurrentPage = 0;
+  late Timer _bannerTimer;
+  final List<String> _bannerImages = [
+    'assets/banners/1.jpg', 'assets/banners/2.jpg', 'assets/banners/3.jpg',
+  ];
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  bool _filterTersedia = false;
+  String _selectedCategory = 'Semua';
+
+  @override
+  void initState() {
+    super.initState();
+    _startBannerTimer();
+    _searchController.addListener(() {
+      setState(() {
+        _searchQuery = _searchController.text;
+      });
+    });
+  }
+
+  void _startBannerTimer() {
+    _bannerTimer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
+      if (!mounted) { timer.cancel(); return; }
+      _bannerCurrentPage = (_bannerCurrentPage + 1) % _bannerImages.length;
+      if (_pageController.hasClients) {
+        _pageController.animateToPage(_bannerCurrentPage, duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _bannerTimer.cancel();
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _showFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        String tempCategory = _selectedCategory;
+        bool tempTersedia = _filterTersedia;
+
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              title: const Text('Filter Opsi'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Kategori', style: TextStyle(fontWeight: FontWeight.bold)),
+                  RadioListTile<String>(
+                    title: const Text('Semua'),
+                    value: 'Semua',
+                    groupValue: tempCategory,
+                    onChanged: (value) => setDialogState(() => tempCategory = value!),
+                  ),
+                  RadioListTile<String>(
+                    title: const Text('Baju'),
+                    value: 'Baju',
+                    groupValue: tempCategory,
+                    onChanged: (value) => setDialogState(() => tempCategory = value!),
+                  ),
+                  RadioListTile<String>(
+                    title: const Text('Aksesoris'),
+                    value: 'Aksesoris',
+                    groupValue: tempCategory,
+                    onChanged: (value) => setDialogState(() => tempCategory = value!),
+                  ),
+                  const Divider(),
+                  CheckboxListTile(
+                    title: const Text('Hanya tampilkan yang tersedia'),
+                    value: tempTersedia,
+                    onChanged: (bool? value) => setDialogState(() => tempTersedia = value ?? false),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Batal'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _selectedCategory = tempCategory;
+                      _filterTersedia = tempTersedia;
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Terapkan'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<CostumeProvider>(
+      builder: (context, provider, child) {
+        if (provider.isLoading) {
+          return const Center(child: CircularProgressIndicator(color: Colors.white));
+        }
+        if (provider.error != null) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Gagal memuat data. Pastikan JSON Server berjalan dan IP Address sudah benar.',
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.yellowAccent),
+              ),
+            ),
+          );
+        }
+
+        List<Costume> filteredList = provider.costumes;
+        if (_filterTersedia) {
+          filteredList = filteredList.where((item) => item.isAvailable).toList();
+        }
+        if (_selectedCategory != 'Semua') {
+          filteredList = filteredList.where((item) => item.category == _selectedCategory).toList();
+        }
+        if (_searchQuery.isNotEmpty) {
+          filteredList = filteredList.where((item) => item.name.toLowerCase().contains(_searchQuery.toLowerCase())).toList();
+        }
+
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                child: Row(
                   children: [
                     Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(width: 48), // spacer kiri (bisa ganti jadi button menu)
-                          Text(
-                            'Penyewaan Baju Cosplay',
-                            style: GoogleFonts.poppins(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              shadows: [
-                                Shadow(
-                                  blurRadius: 6.0,
-                                  color: Colors.black45,
-                                  offset: Offset(1.5, 1.5),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.history, color: Colors.white),
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/history');
-                            },
-                          ),
-                        ],
+                      child: TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Cari kostum...',
+                          prefixIcon: const Icon(Icons.search, color: Colors.white70),
+                          filled: true,
+                          fillColor: Colors.black.withOpacity(0.3),
+                          hintStyle: const TextStyle(color: Colors.white70),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
+                        ),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
-                    TabBar(
-                      controller: _tabController,
-                      indicatorColor: Colors.white,
-                      tabs: categories.map((cat) => Tab(text: cat)).toList(),
+                    const SizedBox(width: 8),
+                    IconButton(
+                      icon: const Icon(Icons.filter_list, color: Colors.white),
+                      onPressed: _showFilterDialog,
+                      tooltip: 'Filter',
                     ),
                   ],
                 ),
               ),
-            ),
-          ),
-        ),
-      ),
-
-      body: Stack(
-        children: [
-          // Background
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/background.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
-          Container(color: Colors.black.withOpacity(0.3)),
-          TabBarView(
-            controller: _tabController,
-            children: categories.map((category) {
-              final filteredCostumes = allCostumes
-                  .where((c) => c.category.toLowerCase() == category.toLowerCase())
-                  .toList();
-
-              return Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: filteredCostumes.isEmpty
-                    ? Center(
-                  child: Text(
-                    'Tidak ada kostum di kategori ini',
-                    style: GoogleFonts.poppins(color: Colors.white, fontSize: 18),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: SizedBox(
+                  height: 150,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: _bannerImages.length,
+                    itemBuilder: (context, index) => Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.asset(_bannerImages[index], fit: BoxFit.cover),
+                      ),
+                    ),
+                    onPageChanged: (int page) => setState(() { _bannerCurrentPage = page; }),
                   ),
-                )
-                    : GridView.builder(
-                  itemCount: filteredCostumes.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 0.7,
-                  ),
-                  itemBuilder: (ctx, i) => CostumeCard(costume: filteredCostumes[i]),
                 ),
-              );
-            }).toList(),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Text(
+                  'Pilihan Kostum',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+              ),
+              _buildCostumeGrid(filteredList),
+            ],
           ),
-        ],
-      ),
+        );
+      },
+    );
+  }
+
+  Widget _buildCostumeGrid(List<Costume> items) {
+    if (items.isEmpty) {
+      return const Center(child: Text('Tidak ada item yang ditemukan.', style: TextStyle(color: Colors.white)));
+    }
+    return GridView.builder(
+      padding: const EdgeInsets.all(16.0),
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, crossAxisSpacing: 16, mainAxisSpacing: 16, childAspectRatio: 0.65),
+      itemCount: items.length,
+      itemBuilder: (ctx, i) => CostumeCard(costume: items[i]),
     );
   }
 }

@@ -1,30 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:penyewaanbaju/providers/costume_provider.dart';
+import 'package:penyewaanbaju/screens/home_screen.dart';
+import 'package:penyewaanbaju/screens/login_screen.dart';
+import 'package:penyewaanbaju/utils/preferences_helper.dart';
 import 'package:provider/provider.dart';
-import 'screens/home_screen.dart';
-import 'screens/rental_screen.dart';
-import 'screens/rental_history_screen.dart';
-import 'screens/login_screen.dart'; // <== Tambahkan ini
-import 'models/costume.dart';
-import 'providers/rental_history.dart';
+import 'firebase_options.dart';
 
-void main() => runApp(MyApp());
+// --- TAMBAHKAN DUA IMPORT INI ---
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // --- TAMBAHKAN BARIS INI UNTUK MENYIAPKAN FORMAT TANGGAL INDONESIA ---
+  await initializeDateFormatting('id_ID', null);
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  bool isLoggedIn = await PreferencesHelper.getLoggedIn();
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => CostumeProvider(),
+      child: MyApp(isLoggedIn: isLoggedIn),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
+  final bool isLoggedIn;
+  const MyApp({super.key, required this.isLoggedIn});
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => RentalHistory(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Penyewaan Baju Cosplay',
-        theme: ThemeData(primarySwatch: Colors.deepPurple),
-        home: LoginScreen(), // <== Ubah jadi LoginScreen
-        routes: {
-          '/home': (ctx) => HomeScreen(), // opsional kalau ingin pakai named
-          '/rental': (ctx) => RentalScreen(),
-          '/history': (ctx) => RentalHistoryScreen(),
-        },
+    return MaterialApp(
+      title: 'Penyewaan Baju',
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      debugShowCheckedModeBanner: false,
+      home: isLoggedIn ? const HomeScreen() : LoginScreen(),
     );
   }
 }

@@ -1,0 +1,172 @@
+{
+  "baju": [
+    {
+      "id": "c1",
+      "name": "Naruto Uzumaki",
+      "imageUrl": "https://s13emagst.akamaized.net/products/45126/45125327/images/res_b69ef530133304d3e096d3f37bcebc29.jpg?width=720&height=720&hash=6B1F0811231E8FC238EEC18DFF4199AF",
+      "description": "Kostum lengkap Naruto dari anime Naruto Shippuden.",
+      "size": "M",
+      "price": 75000,
+      "rating": 4.8,
+      "reviewCount": 32,
+      "isAvailable": true,
+      "category": "Baju"
+    },
+    {
+      "id": "c2",
+      "name": "Sasuke Uchiha",
+      "imageUrl": "https://img.lazcdn.com/g/p/c2eb74f9909a67ec6eb74a2ab7e7629b.jpg_720x720q80.jpg",
+      "description": "Kostum Sasuke Uchiha versi Shippuden.",
+      "size": "L",
+      "price": 85000,
+      "rating": 4.9,
+      "reviewCount": 45,
+      "isAvailable": true,
+      "category": "Baju"
+    },
+    {
+      "id": "c3",
+      "name": "Sailor Moon",
+      "imageUrl": "https://id-test-11.slatic.net/p/71cbc110762d5934b478d100f8fe86c6.jpg",
+      "description": "Kostum Sailor Moon original.",
+      "size": "S",
+      "price": 120000,
+      "rating": 4.7,
+      "reviewCount": 28,
+      "isAvailable": true,
+      "category": "Baju"
+    },
+    {
+      "id": "c4",
+      "name": "Sakura Haruno",
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_q4VzUjPtYUaiW_Aj-XrF5c6zQ0gahLiQ2Q&s",
+      "description": "Kostum Sakura Haruno dari serial Naruto.",
+      "size": "M",
+      "price": 65000,
+      "rating": 4.5,
+      "reviewCount": 19,
+      "isAvailable": true,
+      "category": "Baju"
+    },
+    {
+      "id": "c520",
+      "name": "Kakashi Cosplay Costumes",
+      "imageUrl": "https://ae01.alicdn.com/kf/Sa2563c612f4240209894ff429fcf6d7eT.jpg",
+      "description": "Kakashi Cosplay Costumes Men Women Hatake Green Vest Waistcoat Pants Mask Clothes Set Anime Halloween Costume",
+      "size": "L",
+      "price": 160000,
+      "rating": 4,
+      "reviewCount": 20,
+      "isAvailable": true,
+      "category": "Baju"
+    },
+    {
+      "id": "c1753926608574",
+      "name": " belt strap attack on titan shingeki no kyojin",
+      "imageUrl": "https://images.tokopedia.net/img/cache/900/hDjmkQ/2024/7/2/36793cfc-a304-490f-9552-e4b201053bd5.jpg",
+      "description": "High Quality FASHION IMPORT, FOTO ASLI. Barang asli sesuai dengan foto. Tingkat kemiripan 98%. Sedikit perbedaan warna karena faktor pencahayaan adalah normal.",
+      "size": "L",
+      "price": 74000,
+      "rating": 0,
+      "reviewCount": 0,
+      "isAvailable": true,
+      "category": "Baju"
+    },
+    {
+      "id": "c1753926709216",
+      "name": "Luffy ( One Piece )",
+      "imageUrl": "https://images.tokopedia.net/img/cache/500-square/VqbcmM/2023/11/25/15fc67a5-9e3f-4742-9c42-926f7804946b.jpg.webp?ect=4g",
+      "description": "Dewasa S (1 Set)\nLebar dada 42 cm, Panjang baju 40-60 cm, Lebar pinggang celana 33-39 cm, Panjang celana 50 cm",
+      "size": "L",
+      "price": 90000,
+      "rating": 0,
+      "reviewCount": 0,
+      "isAvailable": true,
+      "category": "Baju"
+    },
+    {
+      "id": "c1753926841966",
+      "name": "Kostum Shinobu Kocho Kimetsu No Yaiba Cosplay Anime Demon Slayer",
+      "imageUrl": "https://images.tokopedia.net/img/cache/900/VqbcmM/2023/7/21/adc9df89-9725-4e62-ba39-9deab74fded8.png",
+      "description": "Paket Lengkap untuk cosplay costume Demon Slayer\nBahan Impor Berkualitas Premium\n\nPaket terdiri dari:\nAtasan + celana + Belt + acc kaki + haori",
+      "size": "M",
+      "price": 120000,
+      "rating": 0,
+      "reviewCount": 0,
+      "isAvailable": true,
+      "category": "Baju"
+    },
+    {
+      "id": "c1753926973313",
+      "name": "Cosplay Pedang Katana Demon Slayer Mainan Pedang Nichirin Tanjiro Kimetsu No Yaiba Rengoku Kyojuro Zenitsu Giyuu Light",
+      "imageUrl": "https://images.tokopedia.net/img/cache/900/VqbcmM/2025/3/14/0f149f09-2859-495f-ac6e-e65c4816939e.jpg",
+      "description": "DETAIL :\nNichirin Blade Dengan Sarung dengan Suara dan Lampu\nPanjang ± 70 Cm\nPanjang sarung ± 51 Cm\nMaterial : Plastik ABS\nPerlu Baterai A2 2 pcs ( Belum termasuk )",
+      "size": ".",
+      "price": 60000,
+      "rating": 0,
+      "reviewCount": 0,
+      "isAvailable": true,
+      "category": "Aksesoris"
+    },
+    {
+      "id": "c1753927122305",
+      "name": "Wig Anime Ninja Deidara kostum Cosplay aksesoris ",
+      "imageUrl": "https://s.alicdn.com/@sc04/kf/H078d70a4c98d4b1f9cc4882cceeea7f86.jpg?avif=close&webp=close",
+      "description": "Ukurannya dapat disesuaikan dan tidak diperlukan pin atau pita. Seharusnya cocok untuk kebanyakan orang.\nAnda hanya perlu mengatur kait di dalam tutup dengan ukuran yang benar agar sesuai dengan kepala Anda.\nHarap perhatikan bahwa warna mungkin terlihat sedikit berbeda secara pribadi karena kualitas kamera dan pengaturan monitor. Stok foto diambil dengan cahaya alami tanpa lampu kilat.",
+      "size": "s",
+      "price": 30000,
+      "rating": 0,
+      "reviewCount": 0,
+      "isAvailable": true,
+      "category": "Aksesoris"
+    },
+    {
+      "id": "c1753927237395",
+      "name": "Set Anime Naruto Aksesoris Cosplay Kakashi Hatake",
+      "imageUrl": "https://images.tokopedia.net/img/cache/900/VqbcmM/2024/11/4/1c88b700-6183-4e1d-badc-a06e200d3247.jpg",
+      "description": "Bahan PU\nUkuran Universal\n\nPaket Berisi\n1x Headband\n1x Mask\n2x Gloves\n3x Kunai",
+      "size": "universal",
+      "price": 50000,
+      "rating": 0,
+      "reviewCount": 0,
+      "isAvailable": true,
+      "category": "Aksesoris"
+    },
+    {
+      "id": "c1753927354767",
+      "name": "topeng anime cosplay kitsune japanese rubah bunsakai anbu rubah demon slayer ",
+      "imageUrl": "https://images.tokopedia.net/img/cache/900/VqbcmM/2024/8/12/8b52ce97-3fc0-456a-b6e1-47d808f100af.jpg",
+      "description": "Produk topeng rubah anbu cosplay ini cocok buat kamu pecinta anime.\nCocok juga buat yang nyari kado buat temen, pacar, adik, kakak yang suka anime",
+      "size": "universal",
+      "price": 23000,
+      "rating": 0,
+      "reviewCount": 0,
+      "isAvailable": true,
+      "category": "Aksesoris"
+    },
+    {
+      "id": "c1753927494401",
+      "name": "Topeng Tobi Cosplay Obito Uchiha ",
+      "imageUrl": "https://images.tokopedia.net/img/cache/900/hDjmkQ/2022/12/6/2aa70259-777b-4f9f-a74d-858bdd374202.jpg",
+      "description": "Masker Anak 22x15.5x8cm Masker Dewasa 26x18x9cm Produk #34;Topeng Tobi Cosplay Obito Uchiha Tobi Akatsuki Naruto Shippuden Figure #34; adalah topeng cosplay dari karakter Tobi/Obito Uchiha dari anime Naruto Shippuden. Topeng ini memiliki desain yang sesuai dengan karakter Tobi dan bisa digunakan untuk acara cosplay, pementasan teater, atau hanya sebagai item koleksi bagi penggemar anime Naruto Shippuden.",
+      "size": "S",
+      "price": 40000,
+      "rating": 0,
+      "reviewCount": 0,
+      "isAvailable": true,
+      "category": "Aksesoris"
+    },
+    {
+      "id": "c1753927757660",
+      "name": "Topi One Piece Luffy Jerami Portgas D Ace Cosplay Anime Hat Koboi",
+      "imageUrl": "https://images.tokopedia.net/img/cache/900/VqbcmM/2023/11/30/4b91fb40-84fb-4e28-ac94-a67d2436146b.jpg",
+      "description": "Bahan Impor berkualitas\nNyaman dipakai\nMelindungi Anda dari sinar matahari sepanjang hari\n\nUnisex ( bisa laki dan perempuan )",
+      "size": ".",
+      "price": 35000,
+      "rating": 0,
+      "reviewCount": 0,
+      "isAvailable": true,
+      "category": "Aksesoris"
+    }
+  ]
+}

@@ -31,6 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
@@ -38,9 +40,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  intl: ^0.18.1
-  provider: ^6.1.0
-  google_fonts: ^6.1.0
+  intl: ^0.19.0
+  provider: ^6.1.2
+  google_fonts: ^6.2.1
+  lottie: ^3.1.2
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -51,7 +55,13 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
+  shared_preferences: ^2.2.3
+  http: ^1.2.1
+  firebase_core: ^2.32.0
+  firebase_auth: ^4.20.0
+  cloud_firestore: ^4.15.8
+  image_picker: ^1.1.2
+  firebase_storage: ^11.6.9
 # The following section is specific to Flutter packages.
 flutter:
   assets :
@@ -64,6 +74,13 @@ flutter:
     - assets/images/pedang.jpg
     - assets/images/shuriken.jpg
     - assets/images/wig_naruto.jpg
+    - assets/images/header.jpg
+    - assets/images/login_background.jpg
+    - assets/banners/1.jpg
+    - assets/banners/2.jpg
+    - assets/banners/3.jpg
+    - assets/animations/Success.json
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
