@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:penyewaanbaju/models/costume.dart';
 import 'package:penyewaanbaju/providers/costume_provider.dart';
+import 'package:penyewaanbaju/theme/app_theme.dart';
+import 'package:penyewaanbaju/widgets/common.dart';
 import 'package:provider/provider.dart';
 
 class AddEditCostumeScreen extends StatefulWidget {
@@ -73,80 +75,131 @@ class _AddEditCostumeScreenState extends State<AddEditCostumeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldDark,
       appBar: AppBar(
-        title: Text(widget.costume == null ? 'Tambah Item' : 'Edit Item'),
-        backgroundColor: Colors.indigo,
+        title: Text(widget.costume == null ? 'Tambah Item' : 'Edit Item',
+            style: AppTheme.heading(20)),
         actions: [
           IconButton(
-            icon: const Icon(Icons.save),
+            icon: const Icon(Icons.check_rounded, color: AppColors.primary),
             onPressed: _saveForm,
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                initialValue: _name,
-                decoration: const InputDecoration(labelText: 'Nama Item'),
-                validator: (value) => value!.isEmpty ? 'Nama tidak boleh kosong' : null,
-                onSaved: (value) => _name = value!,
-              ),
-              // --- TAMBAHAN: Dropdown untuk Kategori ---
-              DropdownButtonFormField<String>(
-                value: _category,
-                decoration: const InputDecoration(labelText: 'Kategori'),
-                items: ['Baju', 'Aksesoris']
-                    .map((label) => DropdownMenuItem(
-                  child: Text(label),
-                  value: label,
-                ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _category = value!;
-                  });
-                },
-                onSaved: (value) => _category = value!,
-              ),
-              TextFormField(
-                initialValue: _imageUrl,
-                decoration: const InputDecoration(labelText: 'URL Gambar'),
-                validator: (value) => value!.isEmpty ? 'URL Gambar tidak boleh kosong' : null,
-                onSaved: (value) => _imageUrl = value!,
-              ),
-              TextFormField(
-                initialValue: _description,
-                decoration: const InputDecoration(labelText: 'Deskripsi'),
-                maxLines: 3,
-                validator: (value) => value!.isEmpty ? 'Deskripsi tidak boleh kosong' : null,
-                onSaved: (value) => _description = value!,
-              ),
-              TextFormField(
-                initialValue: _size,
-                decoration: const InputDecoration(labelText: 'Ukuran (S, M, L, dll)'),
-                validator: (value) => value!.isEmpty ? 'Ukuran tidak boleh kosong' : null,
-                onSaved: (value) => _size = value!,
-              ),
-              TextFormField(
-                initialValue: _price.toString(),
-                decoration: const InputDecoration(labelText: 'Harga Sewa'),
-                keyboardType: TextInputType.number,
-                validator: (value) =>
-                value!.isEmpty || int.tryParse(value) == null ? 'Harga harus berupa angka' : null,
-                onSaved: (value) => _price = int.parse(value!),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _saveForm,
-                child: const Text('Simpan'),
-              ),
-            ],
+      body: StudioBackground(
+        showGlow: false,
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  widget.costume == null ? 'Tambah Kostum' : 'Ubah Kostum',
+                  style: AppTheme.heading(24),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Lengkapi detail kostum untuk inventaris studio.',
+                  style: AppTheme.body(13, color: AppColors.textMuted),
+                ),
+                const SizedBox(height: 26),
+                _buildLabel('Nama Item'),
+                TextFormField(
+                  initialValue: _name,
+                  style: AppTheme.body(14),
+                  cursorColor: AppColors.primary,
+                  validator: (value) => value!.isEmpty ? 'Nama tidak boleh kosong' : null,
+                  onSaved: (value) => _name = value!,
+                ),
+                const SizedBox(height: 18),
+                // Dropdown untuk Kategori
+                _buildLabel('Kategori'),
+                DropdownButtonFormField<String>(
+                  value: _category,
+                  dropdownColor: AppColors.cardDarkAlt,
+                  style: AppTheme.body(14),
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.category_rounded, color: AppColors.textMuted, size: 20),
+                  ),
+                  items: ['Baju', 'Aksesoris']
+                      .map((label) => DropdownMenuItem(
+                    value: label,
+                    child: Text(label),
+                  ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _category = value!;
+                    });
+                  },
+                  onSaved: (value) => _category = value!,
+                ),
+                const SizedBox(height: 18),
+                _buildLabel('URL Gambar'),
+                TextFormField(
+                  initialValue: _imageUrl,
+                  style: AppTheme.body(14),
+                  cursorColor: AppColors.primary,
+                  validator: (value) => value!.isEmpty ? 'URL Gambar tidak boleh kosong' : null,
+                  onSaved: (value) => _imageUrl = value!,
+                ),
+                const SizedBox(height: 18),
+                _buildLabel('Deskripsi'),
+                TextFormField(
+                  initialValue: _description,
+                  style: AppTheme.body(14),
+                  cursorColor: AppColors.primary,
+                  maxLines: 3,
+                  validator: (value) => value!.isEmpty ? 'Deskripsi tidak boleh kosong' : null,
+                  onSaved: (value) => _description = value!,
+                ),
+                const SizedBox(height: 18),
+                _buildLabel('Ukuran (S, M, L, dll)'),
+                TextFormField(
+                  initialValue: _size,
+                  style: AppTheme.body(14),
+                  cursorColor: AppColors.primary,
+                  validator: (value) => value!.isEmpty ? 'Ukuran tidak boleh kosong' : null,
+                  onSaved: (value) => _size = value!,
+                ),
+                const SizedBox(height: 18),
+                _buildLabel('Harga Sewa'),
+                TextFormField(
+                  initialValue: _price.toString(),
+                  style: AppTheme.body(14),
+                  cursorColor: AppColors.primary,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    prefixText: 'Rp ',
+                    prefixIcon: Icon(Icons.payments_rounded, color: AppColors.textMuted, size: 20),
+                  ),
+                  validator: (value) =>
+                  value!.isEmpty || int.tryParse(value) == null ? 'Harga harus berupa angka' : null,
+                  onSaved: (value) => _price = int.parse(value!),
+                ),
+                const SizedBox(height: 32),
+                GradientButton(
+                  label: 'Simpan',
+                  icon: Icons.save_rounded,
+                  onPressed: _saveForm,
+                ),
+              ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildLabel(String label) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 4, bottom: 6),
+      child: Text(
+        label,
+        style: AppTheme.body(12, color: AppColors.textSecondary, weight: FontWeight.w600),
       ),
     );
   }

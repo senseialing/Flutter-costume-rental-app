@@ -84,6 +84,43 @@ RAMCOSPLY adalah aplikasi mobile yang memungkinkan pengguna untuk menyewa berbag
 
 
 
+## Cara Menjalankan Aplikasi
+
+> **Penting:** Data katalog kostum/aksesoris diambil dari **JSON Server lokal** (`http://localhost:3000`). Jika backend belum dijalankan, katalog akan tampil kosong / muncul pesan "Gagal memuat data". Jalankan backend **lebih dulu** sebelum menjalankan aplikasi.
+
+### 1. Prasyarat
+-   [Flutter SDK](https://docs.flutter.dev/get-started/install) (sudah terpasang & terdaftar di PATH)
+-   [Node.js](https://nodejs.org/) (versi 18 atau lebih baru)
+
+### 2. Install dependensi Flutter
+```bash
+flutter pub get
+```
+
+### 3. Jalankan backend JSON Server
+Buka terminal baru, masuk ke folder proyek, lalu jalankan:
+
+```bash
+npx json-server --watch db.json --port 3000
+```
+
+Server akan aktif di `http://localhost:3000`. Endpoint katalog dapat diakses di `http://localhost:3000/baju`. Server akan otomatis memantau (watch) perubahan pada file `db.json`.
+
+> **Catatan Windows:** Jika `npm.ps1` diblokir oleh kebijakan *Execution Policy*, gunakan `npm.cmd` sebagai gantinya. Jika `json-server` sudah terpasang secara global, cukup jalankan:
+> ```powershell
+> json-server --watch db.json --port 3000
+> ```
+
+### 4. Jalankan aplikasi Flutter
+Buka terminal lain, masuk ke folder proyek, lalu jalankan di browser:
+
+```bash
+flutter run -d chrome
+```
+
+Setelah aplikasi terbuka, data katalog akan otomatis dimuat dari backend. Lakukan *refresh* (F5) pada browser jika data belum muncul.
+
+
 ## Kontributor
 - **Nama:Rama Aditya Sutisna** 
 - **NIM:2022804054** 

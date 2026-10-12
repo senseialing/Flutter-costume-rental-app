@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:penyewaanbaju/services/auth_service.dart';
+import 'package:penyewaanbaju/theme/app_theme.dart';
+import 'package:penyewaanbaju/widgets/common.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -62,88 +64,137 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldDark,
       appBar: AppBar(
-        title: const Text('Daftar Akun'),
-        backgroundColor: Colors.indigo,
+        title: Text('Daftar Akun', style: AppTheme.heading(20)),
       ),
-      // PERBAIKAN: Gunakan SingleChildScrollView sebagai root di body
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
+      body: StudioBackground(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 20),
-              const Text(
-                'Buat Akun Baru',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              const SizedBox(height: 8),
+              // Judul dengan aksen
+              Row(
+                children: [
+                  Container(
+                    width: 4,
+                    height: 26,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text('Buat Akun Baru', style: AppTheme.heading(26)),
+                ],
               ),
-              const SizedBox(height: 30),
-              TextField(
+              const SizedBox(height: 6),
+              Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Text(
+                  'Gabung jadi bagian dari komunitas cosplayer.',
+                  style: AppTheme.body(13, color: AppColors.textMuted),
+                ),
+              ),
+              const SizedBox(height: 28),
+              _buildField(
                 controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Nama Lengkap',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
-                ),
+                label: 'Nama Lengkap',
+                icon: Icons.person_outline_rounded,
               ),
-              const SizedBox(height: 20),
-              TextField(
+              const SizedBox(height: 16),
+              _buildField(
                 controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email),
-                ),
+                label: 'Email',
+                icon: Icons.alternate_email_rounded,
                 keyboardType: TextInputType.emailAddress,
               ),
-              const SizedBox(height: 20),
-              TextField(
+              const SizedBox(height: 16),
+              _buildField(
                 controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.lock),
-                ),
-                obscureText: true,
+                label: 'Password',
+                icon: Icons.lock_outline_rounded,
+                obscure: true,
               ),
-              const SizedBox(height: 20),
-              TextField(
+              const SizedBox(height: 16),
+              _buildField(
                 controller: _alamatController,
-                decoration: const InputDecoration(
-                  labelText: 'Alamat Rumah',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.home_work),
-                ),
+                label: 'Alamat Rumah',
+                icon: Icons.home_work_outlined,
                 maxLines: 2,
               ),
-              const SizedBox(height: 20),
-              TextField(
+              const SizedBox(height: 16),
+              _buildField(
                 controller: _teleponController,
-                decoration: const InputDecoration(
-                  labelText: 'No. Telephone',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.phone),
-                ),
+                label: 'No. Telephone',
+                icon: Icons.phone_rounded,
                 keyboardType: TextInputType.phone,
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 32),
               _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : ElevatedButton(
-                onPressed: _register,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.indigo,
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text('Daftar'),
-              ),
+                  ? const Center(
+                      child: CircularProgressIndicator(color: AppColors.primary),
+                    )
+                  : GradientButton(
+                      label: 'Daftar',
+                      icon: Icons.person_add_alt_1_rounded,
+                      isLoading: _isLoading,
+                      onPressed: _register,
+                    ),
+              const SizedBox(height: 24),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    bool obscure = false,
+    int maxLines = 1,
+    TextInputType? keyboardType,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 6),
+          child: Text(
+            label,
+            style: AppTheme.body(12, color: AppColors.textSecondary, weight: FontWeight.w600),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.bgElevated,
+            borderRadius: BorderRadius.circular(AppRadii.md),
+            border: Border.all(color: AppColors.dividerLight),
+          ),
+          child: TextField(
+            controller: controller,
+            obscureText: obscure,
+            maxLines: obscure ? 1 : maxLines,
+            keyboardType: keyboardType,
+            style: AppTheme.body(14),
+            cursorColor: AppColors.primary,
+            decoration: InputDecoration(
+              prefixIcon: Icon(icon, color: AppColors.textMuted, size: 20),
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              filled: false,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:penyewaanbaju/services/auth_service.dart';
+import 'package:penyewaanbaju/theme/app_theme.dart';
+import 'package:penyewaanbaju/widgets/common.dart';
 
 class EditProfileScreen extends StatefulWidget {
   // PERUBAHAN: Menerima data alamat dan telepon
@@ -85,81 +87,112 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldDark,
       appBar: AppBar(
-        title: const Text('Edit Profil'),
-        backgroundColor: Colors.indigo,
+        title: Text('Edit Profil', style: AppTheme.heading(20)),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Nama Lengkap',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
+      body: StudioBackground(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text('Perbarui Data', style: AppTheme.heading(24)),
+                const SizedBox(height: 4),
+                Text(
+                  'Pastikan informasi kamu selalu up to date.',
+                  style: AppTheme.body(13, color: AppColors.textMuted),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Nama tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              // --- TAMBAHAN: Form Alamat ---
-              TextFormField(
-                controller: _alamatController,
-                decoration: const InputDecoration(
-                  labelText: 'Alamat Rumah',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.home_work),
+                const SizedBox(height: 28),
+                _buildField(
+                  controller: _nameController,
+                  label: 'Nama Lengkap',
+                  icon: Icons.person_outline_rounded,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Nama tidak boleh kosong';
+                    }
+                    return null;
+                  },
                 ),
-                maxLines: 2,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Alamat tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              // --- TAMBAHAN: Form Telepon ---
-              TextFormField(
-                controller: _teleponController,
-                decoration: const InputDecoration(
-                  labelText: 'No. Telephone',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.phone),
+                const SizedBox(height: 18),
+                _buildField(
+                  controller: _alamatController,
+                  label: 'Alamat Rumah',
+                  icon: Icons.home_work_outlined,
+                  maxLines: 2,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Alamat tidak boleh kosong';
+                    }
+                    return null;
+                  },
                 ),
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'No. telepon tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 30),
-              _isLoading
-                  ? const CircularProgressIndicator()
-                  : SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _saveProfile,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: const Text('Simpan Perubahan'),
+                const SizedBox(height: 18),
+                _buildField(
+                  controller: _teleponController,
+                  label: 'No. Telephone',
+                  icon: Icons.phone_rounded,
+                  keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'No. telepon tidak boleh kosong';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-            ],
+                const SizedBox(height: 32),
+                _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(color: AppColors.primary),
+                      )
+                    : GradientButton(
+                        label: 'Simpan Perubahan',
+                        icon: Icons.check_rounded,
+                        isLoading: _isLoading,
+                        onPressed: _saveProfile,
+                      ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    int maxLines = 1,
+    TextInputType? keyboardType,
+    String? Function(String?)? validator,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 6),
+          child: Text(
+            label,
+            style: AppTheme.body(12, color: AppColors.textSecondary, weight: FontWeight.w600),
+          ),
+        ),
+        TextFormField(
+          controller: controller,
+          maxLines: maxLines,
+          keyboardType: keyboardType,
+          validator: validator,
+          style: AppTheme.body(14),
+          cursorColor: AppColors.primary,
+          decoration: InputDecoration(
+            prefixIcon: Icon(icon, color: AppColors.textMuted, size: 20),
+          ),
+        ),
+      ],
     );
   }
 }

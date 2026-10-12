@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:penyewaanbaju/models/costume.dart';
 import 'package:penyewaanbaju/providers/costume_provider.dart';
 import 'package:penyewaanbaju/widgets/costume_card.dart';
@@ -8,6 +7,8 @@ import 'package:penyewaanbaju/screens/login_screen.dart';
 import 'package:penyewaanbaju/services/auth_service.dart';
 import 'package:penyewaanbaju/screens/profile_screen.dart';
 import 'package:penyewaanbaju/screens/history_screen.dart';
+import 'package:penyewaanbaju/theme/app_theme.dart';
+import 'package:penyewaanbaju/widgets/common.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -39,22 +40,36 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 1. Latar belakang utama dipindahkan ke Scaffold utama
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.scaffoldDark,
       extendBody: true, // Membuat body bisa berada di belakang navbar
       appBar: AppBar(
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 4,
+              height: 22,
+              decoration: BoxDecoration(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              'RAMCOSPLY',
+              style: AppTheme.display(26, letterSpacing: 2),
+            ),
+          ],
+        ),
+        centerTitle: true,
+        backgroundColor: AppColors.scaffoldDark.withOpacity(0.85),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/header.jpg'),
-              fit: BoxFit.cover,
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: AppColors.divider, width: 1),
             ),
           ),
         ),
-        title: Text('RAMCOSPLY', style: GoogleFonts.bebasNeue(fontSize: 32, color: Colors.white, letterSpacing: 2, shadows: [const Shadow(color: Colors.black54, blurRadius: 10, offset: Offset(2, 2))])),
-        centerTitle: true,
-        actions: const [],
-        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       // 2. Body sekarang dibangun oleh FutureBuilder
@@ -73,19 +88,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ? [ _HomeContent(key: const ValueKey('home')), ProfileScreen(onLogout: _logout) ]
               : [ _HomeContent(key: const ValueKey('home')), const HistoryScreen(), ProfileScreen(onLogout: _logout) ];
 
-          return Stack(
-            children: [
-              // Latar belakang diletakkan di sini agar berada di bawah konten
-              Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/background.jpg"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              pageOptions.elementAt(_selectedIndex),
-            ],
+          return StudioBackground(
+            child: pageOptions.elementAt(_selectedIndex),
           );
         },
       ),
@@ -112,15 +116,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             _selectedIndex = 0;
           }
 
-          return BottomNavigationBar(
-            items: navBarItems,
-            currentIndex: _selectedIndex,
-            // --- PERUBAHAN UTAMA UNTUK TAMPILAN NAVBAR ---
-            backgroundColor: Colors.black.withOpacity(0.5), // Latar belakang semi-transparan
-            selectedItemColor: Colors.white,                 // Warna ikon aktif
-            unselectedItemColor: Colors.white70,               // Warna ikon non-aktif
-            elevation: 0,                                    // Menghilangkan bayangan
-            onTap: _onItemTapped,
+          return Container(
+            decoration: BoxDecoration(
+              color: AppColors.surfaceDark.withOpacity(0.95),
+              border: Border(
+                top: BorderSide(color: AppColors.divider, width: 1),
+              ),
+            ),
+            child: BottomNavigationBar(
+              items: navBarItems,
+              currentIndex: _selectedIndex,
+              backgroundColor: Colors.transparent,
+              selectedItemColor: AppColors.primary,
+              unselectedItemColor: AppColors.textMuted,
+              elevation: 0,
+              type: BottomNavigationBarType.fixed,
+              selectedLabelStyle: AppTheme.body(11, weight: FontWeight.w700),
+              unselectedLabelStyle: AppTheme.body(11),
+              onTap: _onItemTapped,
+            ),
           );
         },
       ),
@@ -186,36 +200,59 @@ class _HomeContentState extends State<_HomeContent> {
 
         return StatefulBuilder(
           builder: (context, setDialogState) {
+            final categories = ['Semua', 'Baju', 'Aksesoris'];
             return AlertDialog(
-              title: const Text('Filter Opsi'),
+              title: Text('Filter Koleksi', style: AppTheme.heading(20)),
+              contentPadding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Kategori', style: TextStyle(fontWeight: FontWeight.bold)),
-                  RadioListTile<String>(
-                    title: const Text('Semua'),
-                    value: 'Semua',
-                    groupValue: tempCategory,
-                    onChanged: (value) => setDialogState(() => tempCategory = value!),
+                  Text('Kategori', style: AppTheme.body(12, color: AppColors.textMuted)),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: categories.map((cat) {
+                      final selected = tempCategory == cat;
+                      return GestureDetector(
+                        onTap: () => setDialogState(() => tempCategory = cat),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 180),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: selected ? AppColors.primary.withOpacity(0.16) : AppColors.bgElevated,
+                            borderRadius: BorderRadius.circular(AppRadii.sm),
+                            border: Border.all(
+                              color: selected ? AppColors.primary : AppColors.dividerLight,
+                            ),
+                          ),
+                          child: Text(
+                            cat,
+                            style: AppTheme.body(13, weight: FontWeight.w600,
+                                color: selected ? AppColors.primary : AppColors.textSecondary),
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
-                  RadioListTile<String>(
-                    title: const Text('Baju'),
-                    value: 'Baju',
-                    groupValue: tempCategory,
-                    onChanged: (value) => setDialogState(() => tempCategory = value!),
-                  ),
-                  RadioListTile<String>(
-                    title: const Text('Aksesoris'),
-                    value: 'Aksesoris',
-                    groupValue: tempCategory,
-                    onChanged: (value) => setDialogState(() => tempCategory = value!),
-                  ),
-                  const Divider(),
-                  CheckboxListTile(
-                    title: const Text('Hanya tampilkan yang tersedia'),
-                    value: tempTersedia,
-                    onChanged: (bool? value) => setDialogState(() => tempTersedia = value ?? false),
+                  const SizedBox(height: 18),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(AppRadii.sm),
+                    onTap: () => setDialogState(() => tempTersedia = !tempTersedia),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: tempTersedia,
+                            onChanged: (v) => setDialogState(() => tempTersedia = v ?? false),
+                          ),
+                          const SizedBox(width: 8),
+                          Text('Hanya yang tersedia', style: AppTheme.body(14)),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -247,16 +284,29 @@ class _HomeContentState extends State<_HomeContent> {
     return Consumer<CostumeProvider>(
       builder: (context, provider, child) {
         if (provider.isLoading) {
-          return const Center(child: CircularProgressIndicator(color: Colors.white));
+          return const Center(child: CircularProgressIndicator(color: AppColors.primary));
         }
         if (provider.error != null) {
           return Center(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Gagal memuat data. Pastikan JSON Server berjalan dan IP Address sudah benar.',
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.yellowAccent),
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.cloud_off_rounded, size: 48, color: AppColors.error),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Gagal memuat data.',
+                    textAlign: TextAlign.center,
+                    style: AppTheme.heading(18),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Pastikan server berjalan dan koneksi stabil.',
+                    textAlign: TextAlign.center,
+                    style: AppTheme.body(13, color: AppColors.textMuted),
+                  ),
+                ],
               ),
             ),
           );
@@ -274,59 +324,113 @@ class _HomeContentState extends State<_HomeContent> {
         }
 
         return SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // ── Search bar ──
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                 child: Row(
                   children: [
                     Expanded(
-                      child: TextField(
-                        controller: _searchController,
-                        decoration: InputDecoration(
-                          hintText: 'Cari kostum...',
-                          prefixIcon: const Icon(Icons.search, color: Colors.white70),
-                          filled: true,
-                          fillColor: Colors.black.withOpacity(0.3),
-                          hintStyle: const TextStyle(color: Colors.white70),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.bgElevated,
+                          borderRadius: BorderRadius.circular(AppRadii.md),
+                          border: Border.all(color: AppColors.dividerLight),
                         ),
-                        style: const TextStyle(color: Colors.white),
+                        child: TextField(
+                          controller: _searchController,
+                          style: AppTheme.body(14),
+                          cursorColor: AppColors.primary,
+                          decoration: InputDecoration(
+                            hintText: 'Cari kostum anime...',
+                            hintStyle: AppTheme.body(14, color: AppColors.textMuted),
+                            prefixIcon: const Icon(Icons.search_rounded, color: AppColors.textMuted, size: 20),
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            filled: false,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          ),
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    IconButton(
-                      icon: const Icon(Icons.filter_list, color: Colors.white),
-                      onPressed: _showFilterDialog,
-                      tooltip: 'Filter',
+                    const SizedBox(width: 10),
+                    // Tombol filter berbentuk kotak aksen
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(AppRadii.md),
+                        border: Border.all(color: AppColors.primary.withOpacity(0.4)),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.tune_rounded, color: AppColors.primary),
+                        onPressed: _showFilterDialog,
+                        tooltip: 'Filter',
+                      ),
                     ),
                   ],
                 ),
               ),
+              // ── Banner carousel + indikator ──
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
                 child: SizedBox(
-                  height: 150,
+                  height: 165,
                   child: PageView.builder(
                     controller: _pageController,
                     itemCount: _bannerImages.length,
                     itemBuilder: (context, index) => Container(
                       margin: const EdgeInsets.symmetric(horizontal: 4.0),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.asset(_bannerImages[index], fit: BoxFit.cover),
+                        borderRadius: BorderRadius.circular(AppRadii.lg),
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Image.asset(_bannerImages[index], fit: BoxFit.cover),
+                            // Gradien bawah agar badge/teks terbaca
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.transparent,
+                                    Colors.black.withOpacity(0.35),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     onPageChanged: (int page) => setState(() { _bannerCurrentPage = page; }),
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Text(
-                  'Pilihan Kostum',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
+              // Indikator banner
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(_bannerImages.length, (i) {
+                  final active = i == _bannerCurrentPage;
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
+                    margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 6),
+                    width: active ? 20 : 6,
+                    height: 6,
+                    decoration: BoxDecoration(
+                      color: active ? AppColors.primary : AppColors.dividerLight,
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                  );
+                }),
+              ),
+              const SectionHeader(
+                title: 'Koleksi Kostum',
+                subtitle: 'Pilih karakter favoritmu',
               ),
               _buildCostumeGrid(filteredList),
             ],
@@ -338,7 +442,11 @@ class _HomeContentState extends State<_HomeContent> {
 
   Widget _buildCostumeGrid(List<Costume> items) {
     if (items.isEmpty) {
-      return const Center(child: Text('Tidak ada item yang ditemukan.', style: TextStyle(color: Colors.white)));
+      return const EmptyState(
+        icon: Icons.search_off_rounded,
+        title: 'Tidak ada kostum',
+        message: 'Coba ubah kata kunci pencarian atau filter kategori kamu.',
+      );
     }
     return GridView.builder(
       padding: const EdgeInsets.all(16.0),

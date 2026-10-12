@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:penyewaanbaju/models/rental_history.dart';
 import 'package:penyewaanbaju/services/auth_service.dart';
+import 'package:penyewaanbaju/theme/app_theme.dart';
+import 'package:penyewaanbaju/widgets/common.dart';
 
 class RequestCard extends StatefulWidget {
   final RentalHistory rental;
@@ -19,13 +21,20 @@ class _RequestCardState extends State<RequestCard> {
       await _authService.updateRentalStatus(widget.rental.id, newStatus);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Status berhasil diubah menjadi "$newStatus"')),
+          SnackBar(
+            content: Text('Status berhasil diubah menjadi "$newStatus"',
+                style: AppTheme.body(13)),
+            backgroundColor: AppColors.success,
+          ),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal mengubah status: $e')),
+          SnackBar(
+            content: Text('Gagal mengubah status: $e', style: AppTheme.body(13)),
+            backgroundColor: AppColors.error,
+          ),
         );
       }
     }
@@ -34,57 +43,86 @@ class _RequestCardState extends State<RequestCard> {
   @override
   Widget build(BuildContext context) {
     final DateFormat formatter = DateFormat('dd MMM yyyy');
+    final currencyFormatter = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
     final bool isPending = widget.rental.status == 'Menunggu Konfirmasi';
 
-    return Card(
-      elevation: 4,
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 14),
+      decoration: BoxDecoration(
+        color: AppColors.cardDark,
+        borderRadius: BorderRadius.circular(AppRadii.lg),
+        border: Border.all(color: AppColors.divider),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(18.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              widget.rental.costumeName,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const Divider(height: 20),
-            _buildInfoRow(Icons.calendar_today, 'Tanggal Sewa', '${formatter.format(widget.rental.startDate)} - ${formatter.format(widget.rental.endDate)}'),
-            const SizedBox(height: 8),
-            _buildInfoRow(Icons.person, 'Penyewa', widget.rental.userName), // Menampilkan nama penyewa
-            const SizedBox(height: 8),
-            _buildInfoRow(Icons.money, 'Total Harga', 'Rp ${widget.rental.totalPrice}'),
-            const SizedBox(height: 16),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Status:', style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(
-                  widget.rental.status,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: isPending ? Colors.orange : Colors.green,
+                Expanded(
+                  child: Text(
+                    widget.rental.costumeName,
+                    style: AppTheme.heading(18),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                const SizedBox(width: 8),
+                StatusChip(status: widget.rental.status, compact: true),
               ],
             ),
+            const SizedBox(height: 16),
+            _buildInfoRow(Icons.calendar_today_rounded, 'Tanggal Sewa',
+                '${formatter.format(widget.rental.startDate)} - ${formatter.format(widget.rental.endDate)}'),
+            const SizedBox(height: 10),
+            _buildInfoRow(Icons.person_rounded, 'Penyewa', widget.rental.userName),
+            const SizedBox(height: 10),
+            _buildInfoRow(Icons.payments_rounded, 'Total Harga',
+                currencyFormatter.format(widget.rental.totalPrice)),
             if (isPending) ...[
-              const Divider(height: 20),
+              const SizedBox(height: 18),
+              const Divider(),
+              const SizedBox(height: 10),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.close),
-                    label: const Text('Tolak'),
-                    onPressed: () => _updateStatus('Ditolak'),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      icon: const Icon(Icons.close_rounded, size: 18),
+                      label: const Text('Tolak'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.error,
+                        side: BorderSide(color: AppColors.error.withOpacity(0.5)),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppRadii.md),
+                        ),
+                        textStyle: AppTheme.body(14, weight: FontWeight.w600),
+                      ),
+                      onPressed: () => _updateStatus('Ditolak'),
+                    ),
                   ),
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.check),
-                    label: const Text('Setujui'),
-                    onPressed: () => _updateStatus('Disewa'),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.check_rounded, size: 18),
+                      label: const Text('Setujui'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.success,
+                        foregroundColor: const Color(0xFF062E28),
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppRadii.md),
+                        ),
+                        textStyle: AppTheme.body(14, weight: FontWeight.w600),
+                      ),
+                      onPressed: () => _updateStatus('Disewa'),
+                    ),
                   ),
                 ],
               )
@@ -97,11 +135,17 @@ class _RequestCardState extends State<RequestCard> {
 
   Widget _buildInfoRow(IconData icon, String label, String value) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 16, color: Colors.grey[600]),
-        const SizedBox(width: 8),
-        Text('$label: ', style: const TextStyle(fontWeight: FontWeight.w600)),
-        Expanded(child: Text(value, overflow: TextOverflow.ellipsis)),
+        Icon(icon, size: 16, color: AppColors.textMuted),
+        const SizedBox(width: 10),
+        Text('$label: ',
+            style: AppTheme.body(13, weight: FontWeight.w600, color: AppColors.textSecondary)),
+        Expanded(
+          child: Text(value,
+              style: AppTheme.body(13),
+              overflow: TextOverflow.ellipsis),
+        ),
       ],
     );
   }

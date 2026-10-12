@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:penyewaanbaju/models/rental_history.dart';
+import 'package:penyewaanbaju/theme/app_theme.dart';
+import 'package:penyewaanbaju/widgets/common.dart';
 
 class HistoryDetailScreen extends StatelessWidget {
   final RentalHistory history;
@@ -12,87 +14,106 @@ class HistoryDetailScreen extends StatelessWidget {
     final dateFormatter = DateFormat('EEEE, dd MMMM yyyy', 'id_ID');
 
     return Scaffold(
+      backgroundColor: AppColors.scaffoldDark,
       appBar: AppBar(
-        title: const Text('Detail Riwayat Sewa'),
-        backgroundColor: Colors.indigo,
+        title: Text('Detail Riwayat', style: AppTheme.heading(20)),
       ),
-      body: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          // Gambar Kostum
-          Image.network(
-            history.imageUrl,
-            height: 300,
-            width: double.infinity,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) =>
-                Container(height: 300, color: Colors.grey[200], child: const Icon(Icons.broken_image, size: 50)),
-          ),
-
-          // Semua detail teks
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: StudioBackground(
+        showGlow: false,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            // Gambar Kostum dengan gradien
+            Stack(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        history.costumeName,
-                        style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                Image.network(
+                  history.imageUrl,
+                  height: 300,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    height: 300,
+                    color: AppColors.cardDark,
+                    child: const Icon(Icons.broken_image_rounded, size: 50, color: AppColors.textMuted),
+                  ),
+                ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  height: 120,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          AppColors.scaffoldDark.withOpacity(0.9),
+                          AppColors.scaffoldDark,
+                        ],
+                        stops: const [0.0, 0.6, 1.0],
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: _getStatusBackgroundColor(history.status),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        history.status,
-                        style: TextStyle(
-                          color: _getStatusTextColor(history.status),
-                          fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+
+            // Semua detail teks
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          history.costumeName,
+                          style: AppTheme.heading(24),
                         ),
                       ),
+                      const SizedBox(width: 10),
+                      StatusChip(status: history.status, compact: true),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  _buildDetailRow(Icons.calendar_today_outlined, 'Tanggal Mulai Sewa', dateFormatter.format(history.startDate)),
+                  const SizedBox(height: 14),
+                  _buildDetailRow(Icons.event_available_rounded, 'Tanggal Selesai Sewa', dateFormatter.format(history.endDate)),
+                  const SizedBox(height: 14),
+                  _buildDetailRow(Icons.person_outline, 'Nama Penyewa', history.userName),
+                  const SizedBox(height: 24),
+                  // Kartu total pembayaran
+                  Container(
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: AppColors.cardDark,
+                      borderRadius: BorderRadius.circular(AppRadii.md),
+                      border: Border.all(color: AppColors.primary.withOpacity(0.3)),
                     ),
-                  ],
-                ),
-                const Divider(height: 30),
-                _buildDetailRow(Icons.calendar_today_outlined, 'Tanggal Mulai Sewa', dateFormatter.format(history.startDate)),
-                const SizedBox(height: 12),
-                _buildDetailRow(Icons.calendar_today, 'Tanggal Selesai Sewa', dateFormatter.format(history.endDate)),
-                const SizedBox(height: 12),
-                _buildDetailRow(Icons.person_outline, 'Nama Penyewa', history.userName),
-                const SizedBox(height: 20),
-                Card(
-                  color: Colors.indigo[50],
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Total Pembayaran',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                          style: AppTheme.body(14, color: AppColors.textSecondary),
                         ),
                         Text(
                           currencyFormatter.format(history.totalPrice),
-                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.indigo),
+                          style: AppTheme.heading(20, weight: FontWeight.w700, color: AppColors.primary),
                         ),
                       ],
                     ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -102,52 +123,28 @@ class HistoryDetailScreen extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, color: Colors.grey[600], size: 20),
-        const SizedBox(width: 16),
+        Container(
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: AppColors.cardDark,
+            borderRadius: BorderRadius.circular(AppRadii.sm),
+            border: Border.all(color: AppColors.divider),
+          ),
+          child: Icon(icon, color: AppColors.accent, size: 18),
+        ),
+        const SizedBox(width: 14),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: TextStyle(color: Colors.grey[600], fontSize: 14)),
+              Text(label, style: AppTheme.body(11, color: AppColors.textMuted)),
               const SizedBox(height: 2),
-              Text(value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black87)),
+              Text(value, style: AppTheme.body(15, weight: FontWeight.w500)),
             ],
           ),
         ),
       ],
     );
-  }
-
-  // Fungsi helper untuk warna status
-  Color _getStatusBackgroundColor(String status) {
-    switch (status) {
-      case 'Selesai':
-        return Colors.green.shade100;
-      case 'Disewa':
-      case 'Disetujui':
-        return Colors.blue.shade100;
-      case 'Menunggu Konfirmasi':
-        return Colors.orange.shade100;
-      case 'Ditolak':
-        return Colors.red.shade100;
-      default:
-        return Colors.grey.shade100;
-    }
-  }
-
-  Color _getStatusTextColor(String status) {
-    switch (status) {
-      case 'Selesai':
-        return Colors.green.shade800;
-      case 'Disewa':
-      case 'Disetujui':
-        return Colors.blue.shade800;
-      case 'Menunggu Konfirmasi':
-        return Colors.orange.shade800;
-      case 'Ditolak':
-        return Colors.red.shade800;
-      default:
-        return Colors.grey.shade800;
-    }
   }
 }
